@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { BottomNavigation } from "@/components/bottom-navigation"
-import { ArrowLeft, Star, Send, ThumbsUp, MessageSquare, Users, TrendingUp } from "lucide-react"
+import { ArrowLeft, Star, Send, ThumbsUp, MessageSquare, Users, TrendingUp, Home, Newspaper, User } from "lucide-react"
 import { useState } from "react"
 
 export default function FeedbackPage() {
@@ -116,50 +116,33 @@ export default function FeedbackPage() {
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header */}
-      <header className="bg-primary text-primary-foreground py-4 px-4">
-        <div className="max-w-4xl mx-auto flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-primary-foreground hover:bg-primary-foreground/10"
-            onClick={() => (window.location.href = "/")}
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-          <div>
-            <h1 className="text-2xl font-bold">แบบประเมินความพึงพอใจ</h1>
-            <p className="text-primary-foreground/90 text-sm">ช่วยเราปรับปรุงแอปให้ดีขึ้น</p>
-          </div>
-        </div>
-      </header>
-
-      {/* Rating Section */}
-      <section className="py-6 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold mb-6">ประเมินความพึงพอใจ</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {ratingCategories.map((category) => (
-              <Card key={category.key}>
-                <CardHeader>
-                  <CardTitle className="text-lg">{category.label}</CardTitle>
-                  <CardDescription>{category.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between">
-                    <StarRating
-                      rating={ratings[category.key as keyof typeof ratings]}
-                      onRatingChange={(rating) => handleRatingChange(category.key, rating)}
-                    />
-                    <span className="text-sm text-muted-foreground">
-                      {ratings[category.key as keyof typeof ratings]}/5
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+       <header className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 text-white">
+              <div className="absolute inset-0 bg-black/10"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse"></div>
+              
+              <div className="relative py-8 px-4">
+                <div className="max-w-4xl mx-auto">
+                  <div className="flex items-center gap-4 mb-6">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-white hover:bg-white/20 backdrop-blur-sm"
+                      onClick={() => (window.location.href = "/")}
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                    </Button>
+                    <div className="flex items-center gap-3"> 
+                      <div>
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-blue-100 bg-clip-text">
+                          แบบประเมินความพึงพอใจ
+                        </h1>
+                        <p className="text-white/90 text-lg">ช่วยให้เราปรับปรุงแอปให้ดีขึ้น</p>
+                      </div>
+                    </div>
+                  </div> 
+                </div>
+              </div>
+       </header> 
 
       {/* Feedback Form */}
       <section className="py-6 px-4 bg-muted/30">
@@ -242,47 +225,36 @@ export default function FeedbackPage() {
             </CardContent>
           </Card>
         </div>
-      </section>
+      </section> 
 
-      {/* Statistics */}
-      <section className="py-6 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold mb-6">สถิติการประเมิน</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <Users className="w-8 h-8 text-primary mx-auto mb-2" />
-                <div className="text-2xl font-bold text-primary">1,247</div>
-                <div className="text-sm text-muted-foreground">ผู้ประเมิน</div>
-              </CardContent>
-            </Card>
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <Star className="w-8 h-8 text-primary mx-auto mb-2" />
-                <div className="text-2xl font-bold text-primary">4.6</div>
-                <div className="text-sm text-muted-foreground">คะแนนเฉลี่ย</div>
-              </CardContent>
-            </Card>
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <MessageSquare className="w-8 h-8 text-primary mx-auto mb-2" />
-                <div className="text-2xl font-bold text-primary">892</div>
-                <div className="text-sm text-muted-foreground">ความคิดเห็น</div>
-              </CardContent>
-            </Card>
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <TrendingUp className="w-8 h-8 text-primary mx-auto mb-2" />
-                <div className="text-2xl font-bold text-primary">94%</div>
-                <div className="text-sm text-muted-foreground">แนะนำให้คนอื่น</div>
-              </CardContent>
-            </Card>
-          </div>
+     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t px-2 py-2 shadow-md">
+        <div className="flex justify-between max-w-md mx-auto">
+          {[
+            { icon: Home, label: 'หน้าหลัก', active: true, href: '/' },
+            { icon: Newspaper, label: 'ข่าวสาร', href: '/new' }, 
+            { icon: User, label: 'โปรไฟล์', href: '/profile' }, 
+          ].map((item, index) => {
+            const IconComponent = item.icon;
+            return (
+              <button
+                key={index}
+                className={`flex flex-col items-center text-xs ${item.active ? 'text-purple-600' : 'text-gray-500'}`}
+                onClick={() => {
+                  if(item.label === 'ออกจากระบบ') {
+                    localStorage.removeItem("isLoggedIn");
+                    window.location.href = item.href;
+                  } else {
+                    window.location.href = item.href;
+                  }
+                }}
+              >
+                <IconComponent className="w-6 h-6 mb-1" />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
         </div>
-      </section>
-
-      {/* Bottom Navigation */}
-      <BottomNavigation />
+     </nav>
     </div>
   )
 }

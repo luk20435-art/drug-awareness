@@ -15,6 +15,10 @@ import {
   AlertTriangle,
   Target,
   Lightbulb,
+  Play,
+  Search,
+  User,
+  Newspaper,
 } from "lucide-react"
 import { useState } from "react"
 
@@ -161,138 +165,30 @@ export default function PreventionPage() {
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header */}
-      <header className="bg-primary text-primary-foreground py-4 px-4">
-        <div className="max-w-4xl mx-auto flex items-center gap-4">
+      <header className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 text-white py-6 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-blue-600/20 to-indigo-700/20 animate-pulse"></div>
+        <div className="max-w-4xl mx-auto flex items-center gap-4 relative z-10">
           <Button
             variant="ghost"
             size="sm"
-            className="text-primary-foreground hover:bg-primary-foreground/10"
+            className="text-white hover:bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl transition-all duration-300 hover:scale-105"
             onClick={() => (window.location.href = "/")}
           >
             <ArrowLeft className="w-4 h-4" />
           </Button>
-          <div>
-            <h1 className="text-2xl font-bold">มาตรการป้องกัน</h1>
-            <p className="text-primary-foreground/90 text-sm">วิธีการป้องกันและหลีกเลี่ยงยาเสพติด</p>
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-yellow-200 to-pink-200 bg-clip-text text-transparent">
+              มาตรการป้องกัน
+            </h1>
+            <p className="text-blue-100 text-sm mt-1 flex items-center gap-2">
+              <Play className="w-4 h-4" />
+              ประสิทธิภาพการป้องกัน
+            </p>
           </div>
         </div>
       </header>
 
-      {/* Prevention Levels Navigation */}
-      <section className="py-6 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold mb-4">ระดับการป้องกัน</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {preventionLevels.map((level) => {
-              const IconComponent = level.icon
-              return (
-                <Button
-                  key={level.id}
-                  variant={selectedLevel === level.id ? "default" : "outline"}
-                  className="h-auto p-4 flex flex-col gap-2"
-                  onClick={() => setSelectedLevel(level.id)}
-                >
-                  <IconComponent className="w-6 h-6" />
-                  <span className="text-sm">{level.label}</span>
-                </Button>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Prevention Strategies */}
-      <section className="py-6 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold mb-6">
-            มาตรการป้องกัน{preventionLevels.find((l) => l.id === selectedLevel)?.label}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {preventionStrategies[selectedLevel as keyof typeof preventionStrategies].map((strategy, index) => {
-              const IconComponent = strategy.icon
-              return (
-                <Card key={index} className="h-full">
-                  <CardHeader>
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <IconComponent className="w-5 h-5 text-primary" />
-                      </div>
-                      <CardTitle className="text-lg">{strategy.title}</CardTitle>
-                    </div>
-                    <CardDescription>{strategy.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2">
-                      {strategy.tips.map((tip, tipIndex) => (
-                        <li key={tipIndex} className="flex items-start gap-2 text-sm">
-                          <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                          <span>{tip}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Refusal Techniques */}
-      <section className="py-6 px-4 bg-muted/30">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold mb-6">เทคนิคการปฏิเสธ</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {refusalTechniques.map((technique, index) => (
-              <Card key={index}>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Lightbulb className="w-5 h-5 text-primary" />
-                    {technique.technique}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground mb-1">ตัวอย่าง:</p>
-                    <p className="text-sm bg-muted p-2 rounded italic">"{technique.example}"</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground mb-1">เหมาะสำหรับ:</p>
-                    <p className="text-sm">{technique.when}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Warning Signs */}
-      <section className="py-6 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold mb-6">สัญญาณเตือนสภาพแวดล้อมเสี่ยง</h2>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-orange-500" />
-                สิ่งที่ควรระวัง
-              </CardTitle>
-              <CardDescription>สัญญาณที่บ่งบอกว่าอาจมีความเสี่ยงต่อการสัมผัสยาเสพติด</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {warningSignsEnvironment.map((sign, index) => (
-                  <div key={index} className="flex items-start gap-2">
-                    <AlertTriangle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm">{sign}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
+     
       {/* Action Plan */}
       <section className="py-6 px-4 bg-muted/30">
         <div className="max-w-4xl mx-auto">
@@ -362,32 +258,34 @@ export default function PreventionPage() {
         </div>
       </section>
 
-      {/* Prevention Stats */}
-      <section className="py-6 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div className="bg-card p-4 rounded-lg border">
-              <div className="text-2xl font-bold text-primary">85%</div>
-              <div className="text-sm text-muted-foreground">ประสิทธิภาพการป้องกัน</div>
-            </div>
-            <div className="bg-card p-4 rounded-lg border">
-              <div className="text-2xl font-bold text-primary">12</div>
-              <div className="text-sm text-muted-foreground">เทคนิคป้องกัน</div>
-            </div>
-            <div className="bg-card p-4 rounded-lg border">
-              <div className="text-2xl font-bold text-primary">4</div>
-              <div className="text-sm text-muted-foreground">ระดับการป้องกัน</div>
-            </div>
-            <div className="bg-card p-4 rounded-lg border">
-              <div className="text-2xl font-bold text-primary">24/7</div>
-              <div className="text-sm text-muted-foreground">การสนับสนุน</div>
-            </div>
-          </div>
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t px-2 py-2 shadow-md">
+        <div className="flex justify-between max-w-md mx-auto">
+          {[
+            { icon: Home, label: 'หน้าหลัก', active: true, href: '/' },
+            { icon: Newspaper, label: 'ข่าวสาร', href: '/new' }, 
+            { icon: User, label: 'โปรไฟล์', href: '/profile' }, 
+          ].map((item, index) => {
+            const IconComponent = item.icon;
+            return (
+              <button
+                key={index}
+                className={`flex flex-col items-center text-xs ${item.active ? 'text-purple-600' : 'text-gray-500'}`}
+                onClick={() => {
+                  if(item.label === 'ออกจากระบบ') {
+                    localStorage.removeItem("isLoggedIn");
+                    window.location.href = item.href;
+                  } else {
+                    window.location.href = item.href;
+                  }
+                }}
+              >
+                <IconComponent className="w-6 h-6 mb-1" />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
         </div>
-      </section>
-
-      {/* Bottom Navigation */}
-      <BottomNavigation />
+     </nav>
     </div>
   )
 }

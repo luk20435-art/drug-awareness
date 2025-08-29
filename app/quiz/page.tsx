@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { BottomNavigation } from "@/components/bottom-navigation"
-import { ArrowLeft, CheckCircle, XCircle, RotateCcw, Trophy, Clock, Target } from "lucide-react"
+import { ArrowLeft, CheckCircle, XCircle, RotateCcw, Trophy, Clock, Target, Home, Search, Heart, User, Play, Newspaper } from "lucide-react"
 import { useState, useEffect } from "react"
 
 export default function QuizPage() {
@@ -155,22 +155,28 @@ export default function QuizPage() {
   if (!quizStarted) {
     return (
       <div className="min-h-screen bg-background pb-20">
-        <header className="bg-primary text-primary-foreground py-4 px-4">
-          <div className="max-w-4xl mx-auto flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-primary-foreground hover:bg-primary-foreground/10"
-              onClick={() => (window.location.href = "/")}
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold">แบบทดสอบ</h1>
-              <p className="text-primary-foreground/90 text-sm">ทดสอบความรู้เกี่ยวกับยาเสพติด</p>
-            </div>
+        <header className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 text-white py-6 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-blue-600/20 to-indigo-700/20 animate-pulse"></div>
+        <div className="max-w-4xl mx-auto flex items-center gap-4 relative z-10">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-white hover:bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl transition-all duration-300 hover:scale-105"
+            onClick={() => (window.location.href = "/")}
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </Button>
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-yellow-200 to-pink-200 bg-clip-text text-transparent">
+              แบบทดสอบความรู้
+            </h1>
+            <p className="text-blue-100 text-sm mt-1 flex items-center gap-2">
+              <Play className="w-4 h-4" />
+              ทดสอบความรู้เกี่ยวกับการป้องกันยาเสพติด
+            </p>
           </div>
-        </header>
+        </div>
+      </header>
 
         <section className="py-8 px-4">
           <div className="max-w-2xl mx-auto">
@@ -217,211 +223,35 @@ export default function QuizPage() {
           </div>
         </section>
 
-        <BottomNavigation />
+       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t px-2 py-2 shadow-md">
+        <div className="flex justify-between max-w-md mx-auto">
+          {[
+            { icon: Home, label: 'หน้าหลัก', active: true, href: '/' },
+            { icon: Newspaper, label: 'ข่าวสาร', href: '/new' }, 
+            { icon: User, label: 'โปรไฟล์', href: '/profile' }, 
+          ].map((item, index) => {
+            const IconComponent = item.icon;
+            return (
+              <button
+                key={index}
+                className={`flex flex-col items-center text-xs ${item.active ? 'text-purple-600' : 'text-gray-500'}`}
+                onClick={() => {
+                  if(item.label === 'ออกจากระบบ') {
+                    localStorage.removeItem("isLoggedIn");
+                    window.location.href = item.href;
+                  } else {
+                    window.location.href = item.href;
+                  }
+                }}
+              >
+                <IconComponent className="w-6 h-6 mb-1" />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+       </nav>
       </div>
     )
   }
-
-  if (showResults) {
-    const score = calculateScore()
-    const scoreLevel = getScoreLevel(score)
-    const percentage = Math.round((score / quizQuestions.length) * 100)
-
-    return (
-      <div className="min-h-screen bg-background pb-20">
-        <header className="bg-primary text-primary-foreground py-4 px-4">
-          <div className="max-w-4xl mx-auto flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-primary-foreground hover:bg-primary-foreground/10"
-              onClick={() => (window.location.href = "/")}
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold">ผลการทดสอบ</h1>
-              <p className="text-primary-foreground/90 text-sm">ผลคะแนนและคำอธิบาย</p>
-            </div>
-          </div>
-        </header>
-
-        <section className="py-8 px-4">
-          <div className="max-w-4xl mx-auto space-y-6">
-            {/* Score Summary */}
-            <Card>
-              <CardHeader className="text-center">
-                <Trophy className="w-16 h-16 text-primary mx-auto mb-4" />
-                <CardTitle className="text-2xl">คะแนนของคุณ</CardTitle>
-                <div className="text-4xl font-bold text-primary mt-2">
-                  {score}/{quizQuestions.length}
-                </div>
-                <div className="text-xl text-muted-foreground">({percentage}%)</div>
-                <Badge className={`${scoreLevel.bg} ${scoreLevel.color} mt-3`}>{scoreLevel.level}</Badge>
-              </CardHeader>
-              <CardContent className="text-center">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                  <div className="bg-green-50 p-3 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">{score}</div>
-                    <div className="text-sm text-green-600">ถูก</div>
-                  </div>
-                  <div className="bg-red-50 p-3 rounded-lg">
-                    <div className="text-2xl font-bold text-red-600">{quizQuestions.length - score}</div>
-                    <div className="text-sm text-red-600">ผิด</div>
-                  </div>
-                  <div className="bg-blue-50 p-3 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">{percentage}%</div>
-                    <div className="text-sm text-blue-600">เปอร์เซ็นต์</div>
-                  </div>
-                  <div className="bg-purple-50 p-3 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-600">{formatTime(600 - timeLeft)}</div>
-                    <div className="text-sm text-purple-600">เวลาที่ใช้</div>
-                  </div>
-                </div>
-                <div className="flex gap-3 mt-6 justify-center">
-                  <Button onClick={resetQuiz} variant="outline">
-                    <RotateCcw className="w-4 h-4 mr-2" />
-                    ทำใหม่
-                  </Button>
-                  <Button onClick={() => (window.location.href = "/feedback")}>ประเมินความพึงพอใจ</Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Answer Review */}
-            <Card>
-              <CardHeader>
-                <CardTitle>รายละเอียดคำตอบ</CardTitle>
-                <CardDescription>ตรวจสอบคำตอบและคำอธิบาย</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {quizQuestions.map((question, index) => {
-                  const userAnswer = selectedAnswers[index]
-                  const isCorrect = userAnswer === question.correctAnswer
-                  return (
-                    <div key={question.id} className="border rounded-lg p-4">
-                      <div className="flex items-start gap-3 mb-3">
-                        {isCorrect ? (
-                          <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                        ) : (
-                          <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                        )}
-                        <div className="flex-1">
-                          <h3 className="font-semibold mb-2">
-                            {index + 1}. {question.question}
-                          </h3>
-                          <div className="space-y-1 text-sm">
-                            <div className="flex items-center gap-2">
-                              <span className="text-muted-foreground">คำตอบของคุณ:</span>
-                              <span className={isCorrect ? "text-green-600" : "text-red-600"}>
-                                {userAnswer !== undefined ? question.options[userAnswer] : "ไม่ได้ตอบ"}
-                              </span>
-                            </div>
-                            {!isCorrect && (
-                              <div className="flex items-center gap-2">
-                                <span className="text-muted-foreground">คำตอบที่ถูก:</span>
-                                <span className="text-green-600">{question.options[question.correctAnswer]}</span>
-                              </div>
-                            )}
-                          </div>
-                          <div className="mt-2 p-2 bg-muted rounded text-sm">
-                            <strong>คำอธิบาย:</strong> {question.explanation}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
-        <BottomNavigation />
-      </div>
-    )
-  }
-
-  const progress = ((currentQuestion + 1) / quizQuestions.length) * 100
-  const question = quizQuestions[currentQuestion]
-
-  return (
-    <div className="min-h-screen bg-background pb-20">
-      <header className="bg-primary text-primary-foreground py-4 px-4">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-primary-foreground hover:bg-primary-foreground/10"
-              onClick={() => (window.location.href = "/")}
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-            <div>
-              <h1 className="text-xl font-bold">
-                คำถามที่ {currentQuestion + 1} จาก {quizQuestions.length}
-              </h1>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 text-primary-foreground">
-            <Clock className="w-4 h-4" />
-            <span className="font-mono">{formatTime(timeLeft)}</span>
-          </div>
-        </div>
-      </header>
-
-      <section className="py-6 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-6">
-            <Progress value={progress} className="h-2" />
-            <div className="flex justify-between text-sm text-muted-foreground mt-2">
-              <span>ความคืบหน้า</span>
-              <span>{Math.round(progress)}%</span>
-            </div>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl leading-relaxed">{question.question}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {question.options.map((option, index) => (
-                <Button
-                  key={index}
-                  variant={selectedAnswers[currentQuestion] === index ? "default" : "outline"}
-                  className="w-full justify-start text-left h-auto p-4"
-                  onClick={() => handleAnswerSelect(index)}
-                >
-                  <span className="w-6 h-6 rounded-full border-2 border-current flex items-center justify-center mr-3 flex-shrink-0">
-                    {String.fromCharCode(65 + index)}
-                  </span>
-                  <span>{option}</span>
-                </Button>
-              ))}
-            </CardContent>
-          </Card>
-
-          <div className="flex justify-between mt-6">
-            <Button variant="outline" onClick={handlePrevQuestion} disabled={currentQuestion === 0}>
-              ก่อนหน้า
-            </Button>
-            <div className="flex gap-2">
-              {currentQuestion === quizQuestions.length - 1 ? (
-                <Button onClick={handleSubmitQuiz} disabled={selectedAnswers[currentQuestion] === undefined}>
-                  ส่งคำตอบ
-                </Button>
-              ) : (
-                <Button onClick={handleNextQuestion} disabled={selectedAnswers[currentQuestion] === undefined}>
-                  ถัดไป
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <BottomNavigation />
-    </div>
-  )
 }

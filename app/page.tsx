@@ -1,137 +1,126 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import React, { useState, useEffect } from 'react';
+import { useRouter } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BookOpen, Video, HelpCircle, Shield, FileText, Star } from "lucide-react"
-import { BottomNavigation } from "@/components/bottom-navigation"
+import { BookOpen, Video, HelpCircle, Shield, FileText, Star, ChevronRight, Home, Search, Heart, User, LogOut, Newspaper } from "lucide-react"
 
 export default function HomePage() {
+  const router = useRouter()
+  const [hoveredCard, setHoveredCard] = useState(null)
+  const [scrollY, setScrollY] = useState(0)
+ 
+  // ข้อมูลหัวข้อ
   const mainTopics = [
-    {
-      id: "knowledge",
-      title: "คลังความรู้",
-      description: "ข้อมูลและความรู้เกี่ยวกับยาเสพติดและผลกระทบ",
-      icon: BookOpen,
-      href: "/knowledge",
-    },
-    {
-      id: "videos",
-      title: "สื่อวิดีโอ",
-      description: "วิดีโอการศึกษาและสื่อการเรียนรู้",
-      icon: Video,
-      href: "/videos",
-    },
-    {
-      id: "help",
-      title: "ขอความช่วยเหลือ",
-      description: "ช่องทางการขอความช่วยเหลือและคำปรึกษา",
-      icon: HelpCircle,
-      href: "/help",
-    },
-    {
-      id: "prevention",
-      title: "มาตรการป้องกัน",
-      description: "วิธีการป้องกันและหลีกเลี่ยงยาเสพติด",
-      icon: Shield,
-      href: "/prevention",
-    },
-    {
-      id: "quiz",
-      title: "แบบทดสอบ",
-      description: "ทดสอบความรู้และความเข้าใจ",
-      icon: FileText,
-      href: "/quiz",
-    },
-    {
-      id: "feedback",
-      title: "แบบประเมินความพึงพอใจ",
-      description: "ประเมินและให้ข้อเสนอแนะ",
-      icon: Star,
-      href: "/feedback",
-    },
-  ]
+    { id: "knowledge", title: "คลังความรู้", icon: BookOpen, href: "/knowledge", gradient: "from-emerald-500 to-teal-500", bgPattern: "bg-emerald-50" },
+    { id: "videos", title: "สื่อ/วิดีโอ", icon: Video, href: "/videos", gradient: "from-red-500 to-pink-500", bgPattern: "bg-red-50" },
+    { id: "help", title: "ขอความช่วยเหลือ", icon: HelpCircle, href: "/help", gradient: "from-blue-500 to-indigo-500", bgPattern: "bg-blue-50" },
+    { id: "prevention", title: "มาตรการป้องกัน", icon: Shield, href: "/prevention", gradient: "from-green-500 to-emerald-500", bgPattern: "bg-green-50" },
+    { id: "quiz", title: "แบบทดสอบ", icon: FileText, href: "/quiz", gradient: "from-purple-500 to-violet-500", bgPattern: "bg-purple-50" },
+    { id: "feedback", title: "แบบประเมินความพึงพอใจ", icon: Star, href: "/feedback", gradient: "from-yellow-500 to-orange-500", bgPattern: "bg-yellow-50" },
+  ];
+
+  // ตรวจสอบล็อกอินปลอม
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn")
+    if (!isLoggedIn) {
+      router.push('/login')
+    }
+  }, [router])
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn")
+    router.push('/login')
+  }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+   <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
       {/* Header */}
-      <header className="bg-primary text-primary-foreground py-6 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl font-bold mb-2">รู้ทันยาเสพติด</h1>
-          <p className="text-primary-foreground/90">สื่อการเรียนรู้เพื่อป้องกันและรู้ทันยาเสพติด</p>
+      <header className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-6 relative shadow-md mb-6">
+        {/* Title อยู่ตรงกลาง */}
+        <h1 className="text-3xl font-bold text-center">รู้ทันยาเสพติด</h1>
+
+        {/* ปุ่ม Logout อยู่ด้านขวา */}
+        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+          <Button 
+            variant="ghost" 
+            className="flex items-center gap-2 text-white hover:bg-white/20" 
+            onClick={handleLogout}
+          >
+            <LogOut className="w-5 h-5" /> Logout
+          </Button>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="py-8 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-4">เรียนรู้และป้องกันตัวเองจากยาเสพติด</h2>
-          <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            แอปพลิเคชันนี้จัดทำขึ้นเพื่อให้ความรู้และสร้างความตระหนักเกี่ยวกับอันตรายของยาเสพติด พร้อมแนวทางการป้องกันที่เหมาะสมสำหรับทุกวัย
-          </p>
-          <Button size="lg" className="bg-accent hover:bg-accent/90">
-            เริ่มเรียนรู้
-          </Button>
-        </div>
-      </section>
-
-      {/* Main Topics Grid */}
-      <section className="py-8 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h3 className="text-xl font-bold text-center mb-6">หัวข้อการเรียนรู้</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mainTopics.map((topic) => {
-              const IconComponent = topic.icon
-              return (
-                <Card key={topic.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                  <CardHeader className="text-center">
-                    <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
-                      <IconComponent className="w-6 h-6 text-primary" />
-                    </div>
-                    <CardTitle className="text-lg">{topic.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-center text-sm">{topic.description}</CardDescription>
-                    <Button
-                      variant="outline"
-                      className="w-full mt-4 bg-transparent"
-                      onClick={() => (window.location.href = topic.href)}
-                    >
-                      เข้าสู่หัวข้อ
-                    </Button>
-                  </CardContent>
-                </Card>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Stats */}
-      <section className="py-8 px-4 bg-muted/50">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div className="bg-card p-4 rounded-lg">
-              <div className="text-2xl font-bold text-primary">6</div>
-              <div className="text-sm text-muted-foreground">หัวข้อหลัก</div>
-            </div>
-            <div className="bg-card p-4 rounded-lg">
-              <div className="text-2xl font-bold text-primary">50+</div>
-              <div className="text-sm text-muted-foreground">เนื้อหาความรู้</div>
-            </div>
-            <div className="bg-card p-4 rounded-lg">
-              <div className="text-2xl font-bold text-primary">20+</div>
-              <div className="text-sm text-muted-foreground">วิดีโอการศึกษา</div>
-            </div>
-            <div className="bg-card p-4 rounded-lg">
-              <div className="text-2xl font-bold text-primary">24/7</div>
-              <div className="text-sm text-muted-foreground">ความช่วยเหลือ</div>
-            </div>
-          </div>
+      {/* Main Topics */}
+      <section className="py-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          {mainTopics.map((topic) => {
+            const IconComponent = topic.icon;
+            return (
+              <Card key={topic.id}
+                className={`group relative bg-white/80 shadow-md cursor-pointer rounded-xl transition-transform hover:scale-105`}
+                onMouseEnter={() => setHoveredCard(topic.id)}
+                onMouseLeave={() => setHoveredCard(null)}
+              >
+                <CardHeader className="text-center pt-4 pb-2">
+                  <div className={`mx-auto w-12 h-12 bg-gradient-to-r ${topic.gradient} rounded-xl flex items-center justify-center mb-2`}>
+                    <IconComponent className="w-6 h-6 text-white" />
+                  </div>
+                  <CardTitle className="text-md font-bold text-gray-800">{topic.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="text-center pb-4">
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => (window.location.href = topic.href)}
+                  >
+                    เข้าสู่หัวข้อ
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </section>
 
       {/* Bottom Navigation */}
-      <BottomNavigation />
+     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t px-2 py-2 shadow-md">
+        <div className="flex justify-between max-w-md mx-auto">
+          {[
+            { icon: Home, label: 'หน้าหลัก', active: true, href: '/' },
+            { icon: Newspaper, label: 'ข่าวสาร', href: '/new' }, 
+            { icon: User, label: 'โปรไฟล์', href: '/profile' }, 
+          ].map((item, index) => {
+            const IconComponent = item.icon;
+            return (
+              <button
+                key={index}
+                className={`flex flex-col items-center text-xs ${item.active ? 'text-purple-600' : 'text-gray-500'}`}
+                onClick={() => {
+                  if(item.label === 'ออกจากระบบ') {
+                    localStorage.removeItem("isLoggedIn");
+                    window.location.href = item.href;
+                  } else {
+                    window.location.href = item.href;
+                  }
+                }}
+              >
+                <IconComponent className="w-6 h-6 mb-1" />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+     </nav>
+
     </div>
   )
 }
