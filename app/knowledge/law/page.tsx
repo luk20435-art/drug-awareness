@@ -47,19 +47,6 @@ export default function TypesPage() {
               priority
             />
           </div>
-
-          {/* โปสเตอร์ตัวที่ 2 */}
-          <div
-            className="relative w-full sm:w-[45%] md:w-[45%] lg:w-[48%] xl:w-[48%] aspect-[210/297] rounded-xl overflow-hidden shadow-xl border border-gray-200 bg-white"
-          >
-            <Image
-              src="/images/blame.png"
-              alt="โปสเตอร์ A4 2"
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
         </div>
       </main>  
       

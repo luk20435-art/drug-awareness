@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { BookOpen, Video, HelpCircle, Shield, FileText, Star, LogOut, Home, User, Newspaper } from "lucide-react"
 
+
 export default function HomePage() {
   const router = useRouter()
   const pathname = usePathname()

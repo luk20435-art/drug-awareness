@@ -50,6 +50,9 @@ export default function RegisterPage() {
       users.push(newUser)
       localStorage.setItem("users", JSON.stringify(users))
 
+      localStorage.setItem("loggedInUser", JSON.stringify(newUser))
+      localStorage.setItem("isLoggedIn", "true")
+
       setIsLoading(false)
       alert("สมัครสมาชิกสำเร็จ! โปรดเข้าสู่ระบบ")
       router.push('/login') // ไปหน้า Login
