@@ -149,7 +149,7 @@ export default function ProfilePage() {
               <button
                 key={index}
                 className={`flex flex-col items-center text-xs transition-colors duration-200 px-3 py-2 rounded-lg ${
-                  item.href === "/new" 
+                  item.href === "/profile" 
                     ? "text-purple-600 bg-purple-50" 
                     : "text-gray-500 hover:text-purple-600 hover:bg-purple-50"
                 }`}
