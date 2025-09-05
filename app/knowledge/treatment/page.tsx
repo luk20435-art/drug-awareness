@@ -2,6 +2,7 @@
 'use client' 
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home, Link, Newspaper, Play, User } from "lucide-react";
+import Image from "next/image";
 import React from "react"; 
 
 // ถ้าต้องการให้หน้าคือ Client Component ให้ใส่ 'use client' ข้างล่างนี้
@@ -25,13 +26,33 @@ export default function TypesPage() {
           </Button>
           <div className="flex-1">
             <h1 className="text-3xl font-bold bg-gradient-to-r from-yellow-200 to-pink-200 bg-clip-text text-transparent">
-              การบำบัดรักษา
+              แนวทางการบำบัดรักษา
             </h1> 
           </div>
         </div>
       </header>
       
-     
+     <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center mt-8 mb-14">
+          {/* กล่อง A4 แบบ responsive */}
+          <div
+            className="relative w-full
+              max-w-[350px]    /* มือถือ */
+              sm:max-w-[400px] /* tablet เล็ก */
+              md:max-w-[500px] /* tablet ใหญ่ */
+              lg:max-w-[500px] /* desktop */
+              xl:max-w-[600px] /* จอใหญ่ */
+              aspect-[210/297]
+              rounded-xl overflow-hidden shadow-xl border border-gray-200 bg-white"
+          >
+            <Image
+              src="/images/guidline.jpg" // 🔄 รูปโปสเตอร์ของคุณ
+              alt="โปสเตอร์ A4"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+        </main>
 
       
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t px-2 py-2 shadow-md">

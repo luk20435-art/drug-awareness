@@ -2,7 +2,8 @@
 'use client' 
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home, Link, Newspaper, Play, User } from "lucide-react";
-import React from "react"; 
+import React from "react";  
+import Image from "next/image";
 
 // ถ้าต้องการให้หน้าคือ Client Component ให้ใส่ 'use client' ข้างล่างนี้
 
@@ -11,7 +12,7 @@ import React from "react";
 export default function TypesPage() {
   return (
     
-    <div className="min-h-screen p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100"> 
+    <div className="min-h-screen p-6 from-slate-50 via-blue-50 to-indigo-100"> 
        <header className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 text-white py-6 px-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-blue-600/20 to-indigo-700/20 animate-pulse"></div>
         <div className="max-w-4xl mx-auto flex items-center gap-4 relative z-10">
@@ -31,6 +32,35 @@ export default function TypesPage() {
         </div>
       </header>
       
+      <main className="min-h-screen from-slate-50 via-blue-50 to-indigo-100 flex justify-center items-start p-6 mt-8 mb-14">
+              <div className="flex flex-wrap justify-center gap-6 w-full max-w-[1400px]">
+                {/* โปสเตอร์ตัวที่ 1 */}
+                <div
+                  className="relative w-full sm:w-[45%] md:w-[45%] lg:w-[48%] xl:w-[48%] aspect-[210/297] rounded-xl overflow-hidden shadow-xl border border-gray-200 bg-white"
+                >
+                  <Image
+                    src="/images/type_out.png"
+                    alt="โปสเตอร์ A4 1"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+      
+                {/* โปสเตอร์ตัวที่ 2 */}
+                <div
+                  className="relative w-full sm:w-[45%] md:w-[45%] lg:w-[48%] xl:w-[48%] aspect-[210/297] rounded-xl overflow-hidden shadow-xl border border-gray-200 bg-white"
+                >
+                  <Image
+                    src="/images/type.png"
+                    alt="โปสเตอร์ A4 2"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+              </div>
+      </main>  
      
 
       

@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, LogIn, Loader2 } from "lucide-react"
@@ -14,15 +14,28 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
   const router = useRouter()
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError('')
+
     setTimeout(() => {
-      localStorage.setItem("isLoggedIn", "true")
+      // ดึง users จาก localStorage
+      const users = JSON.parse(localStorage.getItem("users") || "[]")
+      const user = users.find((u: any) => u.email === email && u.password === password)
+
+      if (user) {
+        localStorage.setItem("isLoggedIn", "true")
+        localStorage.setItem("loggedInUser", JSON.stringify(user))
+        router.push('/') // ไปหน้า Home
+      } else {
+        setError("อีเมลหรือรหัสผ่านไม่ถูกต้อง")
+      }
+
       setIsLoading(false)
-      router.push('/')
     }, 800)
   }
 
@@ -35,7 +48,8 @@ export default function LoginPage() {
             กรอกอีเมลและรหัสผ่านเพื่อเริ่มใช้งาน
           </CardDescription>
         </div>
-        <CardContent className="bg-white dark:bg-gray-900 p-6">
+        <CardContent className="bg-white p-6">
+          {error && <div className="bg-red-50 border-l-4 border-red-500 p-3 mb-4 text-red-700">{error}</div>}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="email">อีเมล</Label>
@@ -91,7 +105,7 @@ export default function LoginPage() {
               )}
             </Button>
 
-            <div className="text-center text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-center text-sm text-gray-500">
               ยังไม่มีบัญชี?{" "}
               <Link href="/register" className="text-indigo-600 font-medium hover:underline">
                 สมัครสมาชิก
