@@ -56,26 +56,6 @@ export default function QuizPage() {
             </Button>
           </CardContent>
         </Card>
-
-        {/* Form 2 */}
-        <Card>
-          <CardHeader>
-            <CardTitle>แบบฟอร์มที่ 2</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              แบบสอบถามข้อมูลทั่วไปของผู้ตอบ
-            </p>
-            <Button
-              variant="secondary"
-              className="w-full flex gap-2"
-              onClick={() => window.open(form2, "_blank")}
-            >
-              <ExternalLink className="w-4 h-4" />
-              เปิดแบบฟอร์ม
-            </Button>
-          </CardContent>
-        </Card>
       </section>
 
       {/* Bottom Navigation */}
